@@ -29,7 +29,7 @@ const Scan = () => {
         cameraId,
         {
           fps: 25, // Kecepatan scan (frame per detik)
-          qrbox: { width: 250, height: 250 }, // Kotak area scan
+          qrbox: { width: 250, height: 350 }, // Kotak area scan
         },
         (decodedText) => {
           setScanResult(decodedText);
