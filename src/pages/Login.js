@@ -1,22 +1,57 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const Login = () => {
-  const [nama, setNama] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const loign = (e) => {
-    console.log("test");
-    console.log(nama);
-    console.log(password);
-    Swal.fire({
-      title: "Berhasil Login!",
-      icon: "success",
-      draggable: true,
-    });
-    navigate("/home");
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Mencegah reload halaman
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/login",
+        {
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+
+      if (response.data.token) {
+        sessionStorage.setItem("isLoggedIn", "true");
+        sessionStorage.setItem("userEmail", email);
+        sessionStorage.setItem("token", response.data.token);
+
+        Swal.fire({
+          title: "Berhasil Login!",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        navigate("/home");
+      } else {
+        Swal.fire({
+          title: "Login Gagal!",
+          text: response.data.message || "Email atau Password salah",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Login Gagal!",
+        text: "Terjadi kesalahan, coba lagi.",
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -30,19 +65,19 @@ const Login = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Nama"
-            onChange={(e) => setNama(e.target.value)}
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-3">
           <input
-            type="text"
+            type="password"
             className="form-control"
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button onClick={loign} className="btn btn-primary w-100">
+        <button onClick={handleLogin} className="btn btn-primary w-100">
           Login
         </button>
       </div>
