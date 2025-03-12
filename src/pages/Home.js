@@ -6,12 +6,12 @@ const Home = () => {
         <div className="row g-3 justify-content-center">
           <div className="col-5 col-md-3">
             <div className="card shadow-lg border-0 rounded-4 bg-info text-white text-center p-4">
-              <p>Menu 1</p>
+              <p>INFO FUEL TRUCK</p>
             </div>
           </div>
           <div className="col-5 col-md-3">
             <div className="card shadow-lg border-0 rounded-4 bg-primary text-white text-center p-4">
-              <p>Menu 2</p>
+              <p>SCAN BARCODE</p>
             </div>
           </div>
           <div className="col-5 col-md-3">
