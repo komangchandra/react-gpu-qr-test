@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const Login = () => {
   const [nama, setNama] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const loign = (e) => {
     console.log("test");
@@ -14,6 +16,7 @@ const Login = () => {
       icon: "success",
       draggable: true,
     });
+    navigate("/home");
   };
 
   return (
