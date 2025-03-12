@@ -51,10 +51,12 @@ const Scan = () => {
   return (
     <div className="d-flex flex-column justify-content-center align-items-center vh-100 bg-light">
       <h3 className="mb-4">Scan QR Code</h3>
-      <div id="reader" style={{ width: "300px", height: "250px" }}></div>
+      <div id="reader" style={{ width: "300px" }}></div>
       <p className="mt-3 fw-bold text-dark">Hasil: {scanResult}</p>
     </div>
   );
 };
 
 export default Scan;
+
+// height: "300px"
