@@ -1,38 +1,57 @@
 import { useEffect, useState } from "react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 
 const Scan = () => {
   const [scanResult, setScanResult] = useState("Belum ada hasil");
+  const [cameraId, setCameraId] = useState(null);
 
   useEffect(() => {
-    const scanner = new Html5QrcodeScanner("reader", {
-      fps: 25, // Frames per second
-      qrbox: { width: 250, height: 250 }, // Ukuran area scan
-    });
+    // Mendapatkan daftar kamera
+    Html5Qrcode.getCameras()
+      .then((devices) => {
+        if (devices && devices.length) {
+          // Cari kamera belakang
+          const backCamera = devices.find((device) =>
+            device.label.toLowerCase().includes("back")
+          );
+          setCameraId(backCamera ? backCamera.id : devices[0].id);
+        }
+      })
+      .catch((err) => console.error("Error mendapatkan kamera:", err));
+  }, []);
 
-    scanner.render(
-      (result) => {
-        setScanResult(result);
-        scanner.clear(); // Hentikan scanner setelah berhasil membaca QR Code
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  useEffect(() => {
+    if (!cameraId) return;
+
+    const html5QrCode = new Html5Qrcode("reader");
+    html5QrCode
+      .start(
+        cameraId,
+        {
+          fps: 10, // Kecepatan scan (frame per detik)
+          qrbox: { width: 250, height: 250 }, // Kotak area scan
+        },
+        (decodedText) => {
+          setScanResult(decodedText);
+          html5QrCode.stop(); // Hentikan pemindaian setelah sukses
+        },
+        (errorMessage) => {
+          console.warn("Gagal membaca QR Code:", errorMessage);
+        }
+      )
+      .catch((err) => console.error("Error memulai kamera:", err));
 
     return () => {
-      scanner.clear(); // Bersihkan scanner saat komponen di-unmount
+      html5QrCode
+        .stop()
+        .catch((err) => console.error("Error menghentikan kamera:", err));
     };
-  }, []);
+  }, [cameraId]);
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center vh-100 bg-light">
       <h3 className="mb-4">Scan QR Code</h3>
-      <div
-        id="reader"
-        className="shadow-lg border-0 rounded-4 bg-white"
-        style={{ width: "300px" }}
-      ></div>
+      <div id="reader" style={{ width: "300px", height: "250px" }}></div>
       <p className="mt-3 fw-bold text-dark">Hasil: {scanResult}</p>
     </div>
   );
