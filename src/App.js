@@ -2,16 +2,25 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Scan from "./pages/Scan";
-import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute"; // Import PublicRoute
+import Profile from "./pages/Profile";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Halaman Login bisa diakses siapa saja */}
-        <Route path="/" element={<Login />} />
+        {/* Jika sudah login, tidak bisa akses Login */}
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
 
-        {/* Halaman Home & Scan hanya bisa diakses setelah login */}
+        {/* Home & Scan hanya bisa diakses setelah login */}
         <Route
           path="/home"
           element={
@@ -25,6 +34,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Scan />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

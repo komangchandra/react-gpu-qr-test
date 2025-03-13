@@ -40,7 +40,7 @@ const Home = () => {
             <div
               className="card shadow-lg border-0 rounded-4 bg-success text-white text-center p-4"
               style={{ cursor: "pointer" }}
-              onClick={() => navigate("/info")}
+              onClick={() => navigate("/profile")}
             >
               <p>INFO AKUN FUEL MAN</p>
             </div>

@@ -13,7 +13,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/login",
+        "https://gpu.komangchandra.my.id/test-gpu/public/api/login",
         {
           email: email,
           password: password,
@@ -25,9 +25,12 @@ const Login = () => {
         }
       );
 
+      const name = response.data.user.name;
+
       if (response.data.token) {
         sessionStorage.setItem("isLoggedIn", "true");
         sessionStorage.setItem("userEmail", email);
+        sessionStorage.setItem("userName", name);
         sessionStorage.setItem("token", response.data.token);
 
         Swal.fire({
