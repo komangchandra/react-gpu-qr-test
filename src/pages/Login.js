@@ -13,7 +13,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://gpu.komangchandra.my.id/test-gpu/public/api/login",
+        "https://gpu.komangchandra.my.id/api/login",
         {
           email: email,
           password: password,

@@ -56,7 +56,7 @@ const Scan = () => {
   const fetchUnitData = async (unit_id) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/units/${unit_id}`
+        `https://gpu.komangchandra.my.id/api/units/${unit_id}`
       );
       setUnitData(response.data);
       setError(null); // Reset error jika berhasil
